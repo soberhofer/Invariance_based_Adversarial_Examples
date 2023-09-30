@@ -12,3 +12,10 @@ def imshow(inp, title=None, denorm=True):
   plt.imshow(inp)
   if title is not None:
     plt.title(title)
+
+
+def imagenette_outputs(orig_outputs):
+  imagenette_classes = [0,217,482,491,497,566,569,571,574,701]
+  outputs = torch.index_select(orig_outputs,1,torch.tensor(imagenette_classes).to(orig_outputs.device))
+  _, preds = torch.max(outputs, 1)
+  return preds
