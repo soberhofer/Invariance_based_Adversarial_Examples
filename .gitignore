@@ -3,3 +3,4 @@ imagenette2*
 output*/
 .DS_Store
 __pycache__
+settings.json
