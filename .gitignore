@@ -1,0 +1,5 @@
+imagenette2-160.tgz
+imagenette2*
+output*/
+.DS_Store
+__pycache__
