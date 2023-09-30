@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
+from scipy.ndimage import center_of_mass
+
 #Helper Function to plot
 def imshow(inp, title=None, denorm=True):
   inp = inp.numpy().transpose((1, 2, 0))
@@ -19,3 +21,12 @@ def imagenette_outputs(orig_outputs):
   outputs = torch.index_select(orig_outputs,1,torch.tensor(imagenette_classes).to(orig_outputs.device))
   _, preds = torch.max(outputs, 1)
   return preds
+
+def multiple_c_o_m(input):
+  labels = np.ones_like(input).cumsum(0)
+  c_o_m = center_of_mass(input,labels, index=np.arange(1,input.shape[0]+1))
+  # We're only interested in the x and y coordinates
+  c_o_m = np.array(c_o_m)[:,2:]
+  #Swap x and y
+  c_o_m = c_o_m[:,::-1]
+  return c_o_m
