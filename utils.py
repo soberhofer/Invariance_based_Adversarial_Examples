@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
+import cv2
 from scipy.ndimage import center_of_mass
 
 #Helper Function to plot
@@ -26,7 +27,14 @@ def multiple_c_o_m(input):
   labels = np.ones_like(input).cumsum(0)
   c_o_m = center_of_mass(input,labels, index=np.arange(1,input.shape[0]+1))
   # We're only interested in the x and y coordinates
-  c_o_m = np.array(c_o_m)[:,2:]
+  c_o_m = np.array(c_o_m)[:,1:]
   #Swap x and y
   c_o_m = c_o_m[:,::-1]
   return c_o_m
+
+def shift(image, offsets):
+  dx, dy = offsets
+  #Translation Matrix
+  T = np.float32([[1, 0, dx], [0, 1, dy]]) 
+  shifted = cv2.warpAffine(image.transpose(1,2,0), T, (image.shape[1], image.shape[2])) 
+  return shifted.transpose(2,0,1)
