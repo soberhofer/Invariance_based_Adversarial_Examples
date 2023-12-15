@@ -4,3 +4,6 @@ output*/
 .DS_Store
 __pycache__
 settings.json
+various.md
+adv_examples_*/
+temp/
