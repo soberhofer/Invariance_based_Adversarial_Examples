@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import torch
 import cv2
 from scipy.ndimage import center_of_mass
+from pytorch_grad_cam import base_cam
+from PIL import Image
+import os, random
+from tqdm import tqdm
+from AdvExample import AdvExample
 
 #Helper Function to plot
 def imshow(inp, title=None, denorm=True):
@@ -38,3 +43,26 @@ def shift(image, offsets):
   T = np.float32([[1, 0, dx], [0, 1, dy]]) 
   shifted = cv2.warpAffine(image.transpose(1,2,0), T, (image.shape[1], image.shape[2])) 
   return shifted.transpose(2,0,1)
+
+def sort_pairs(data, labels, bs):
+  correct = False
+  tries = 0
+  while (not correct and tries < bs**2):
+      swapped = False
+      for idx, img in enumerate(data):
+        if idx >= len(labels)/2:
+          break
+        if labels[idx] == labels[idx+int((len(labels)/2))]:
+          labels[idx], labels[idx+1] = labels[idx+1], labels[idx]
+          data[idx], data[idx+1] = data[idx+1], data[idx]
+          swapped = True
+      if not swapped:
+        correct = True
+      tries += 1
+
+def set_seeds(seed: int = 42):
+  np.random.seed(seed)
+  torch.manual_seed(seed)
+  torch.cuda.manual_seed(seed)
+  torch.cuda.manual_seed_all(seed)
+  random.seed(seed)
