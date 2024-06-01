@@ -24,7 +24,9 @@ def imshow(inp, title=None, denorm=True):
 
 def imagenette_outputs(orig_outputs):
   imagenette_classes = [0,217,482,491,497,566,569,571,574,701]
-  outputs = torch.index_select(orig_outputs,1,torch.tensor(imagenette_classes).to(orig_outputs.device))
+  class_tensor = torch.tensor(imagenette_classes)
+  class_tensor = class_tensor.to(orig_outputs.device)
+  outputs = torch.index_select(orig_outputs,1,class_tensor)
   _, preds = torch.max(outputs, 1)
   return preds
 
