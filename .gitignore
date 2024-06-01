@@ -5,8 +5,14 @@ output*/
 __pycache__
 settings.json
 various.md
+*adv_examples_*/
 adv_examples_*/
 temp/
 *.zip
 test/
 results_old/
+allresults_*.json
+plots/
+random_*/
+best_*/
+
